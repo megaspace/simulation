@@ -32,14 +32,17 @@ func TestMagnitude(t *testing.T) {
 
 	v = core.Vector{0, 0, 0}
 	mag = v.Magnitude()
+	assert.Equal(t, core.Vector{0, 0, 0}, v)
 	assert.Equal(t, 0.0, mag)
 
 	v = core.Vector{3, 4, 0}
 	mag = v.Magnitude()
+	assert.Equal(t, core.Vector{3, 4, 0}, v)
 	assert.Equal(t, 5.0, mag)
 
 	v = core.Vector{-20, 0, 21}
 	mag = v.Magnitude()
+	assert.Equal(t, core.Vector{-20, 0, 21}, v)
 	assert.Equal(t, 29.0, mag)
 }
 
@@ -54,6 +57,7 @@ func TestDivide(t *testing.T) {
 
 	v = core.Vector{5.42, -2524.4422, 0}
 	result = v.Divide(4)
+	assert.Equal(t, core.Vector{5.42, -2524.4422, 0}, v)
 	assert.Equal(t, core.Vector{1.355, -631.11055, 0}, result)
 }
 
@@ -63,15 +67,13 @@ func TestMultiply(t *testing.T) {
 
 	v = core.Vector{4.35, -3.223, 0}
 	result = v.Multiply(2)
-	assert.Equal(t, 8.7, result.X)
-	assert.Equal(t, -6.446, result.Y)
-	assert.Equal(t, 0.0, result.Z)
+	assert.Equal(t, core.Vector{4.35, -3.223, 0}, v)
+	assert.Equal(t, core.Vector{8.7, -6.446, 0.0}, result)
 
 	v = core.Vector{425, -23.2, 0.444}
 	result = v.Multiply(0.1)
-	assert.Equal(t, 42.5, result.X)
-	assert.Equal(t, -2.32, result.Y)
-	assert.Equal(t, 0.0444, result.Z)
+	assert.Equal(t, core.Vector{425, -23.2, 0.444}, v)
+	assert.Equal(t, core.Vector{42.5, -2.32, 0.0444}, result)
 }
 
 func TestNormalize(t *testing.T) {
@@ -79,11 +81,13 @@ func TestNormalize(t *testing.T) {
 
 	v = core.Vector{3, 4, 0}
 	v2 = v.Normalize()
+	assert.Equal(t, core.Vector{3, 4, 0}, v)
 	assert.Equal(t, 5.0, v.Magnitude())
 	assert.Equal(t, 1.0, v2.Magnitude())
 
 	v = core.Vector{0, 0, 0}
 	v2 = v.Normalize()
+	assert.Equal(t, core.Vector{0, 0, 0}, v)
 	assert.Equal(t, 0.0, v.Magnitude())
 	assert.Equal(t, 0.0, v2.Magnitude())
 }
