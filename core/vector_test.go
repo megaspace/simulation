@@ -1,9 +1,11 @@
 package core_test
 
 import (
-	"github.com/megaspace/server/core"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/megaspace/server/core"
 )
 
 func TestAdd(t *testing.T) {
