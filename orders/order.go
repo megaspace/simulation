@@ -11,9 +11,6 @@ const (
 )
 
 type Order interface {
+	Status() OrderStatus
 	Execute(duration time.Duration)
-
-	IsPending() bool
-	IsInProgress() bool
-	IsComplete() bool
 }

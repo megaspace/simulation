@@ -17,7 +17,7 @@ func TestNewMoveOrder_PENDING(t *testing.T) {
 	var order orders.Order
 	order = orders.NewMoveOrder(fleet, target)
 
-	assert.True(t, order.IsPending())
+	assert.Equal(t, orders.PENDING, order.Status())
 }
 
 func TestExecute_IN_PROGRESS(t *testing.T) {
@@ -32,7 +32,7 @@ func TestExecute_IN_PROGRESS(t *testing.T) {
 	order.Execute(time.Second)
 
 	assert.Equal(t, core.Vector{10, 0, 0}, fleet.Coordinates)
-	assert.True(t, order.IsInProgress())
+	assert.Equal(t, orders.IN_PROGRESS, order.Status())
 }
 
 func TestExecute_COMPLETE(t *testing.T) {
@@ -47,5 +47,5 @@ func TestExecute_COMPLETE(t *testing.T) {
 	order.Execute(time.Second)
 
 	assert.Equal(t, target, fleet.Coordinates)
-	assert.True(t, order.IsComplete())
+	assert.Equal(t, orders.COMPLETE, order.Status())
 }
