@@ -13,21 +13,21 @@ type Fleet struct {
 	Id          FleetId
 	Name        string
 	Coordinates core.Vector
-	Ships       []Ship
+	Ships       []*Ship
 	Speed       float64
 }
 
-func NewFleet(id FleetId, name string) Fleet {
-	fleet := Fleet{}
+func NewFleet(id FleetId, name string) *Fleet {
+	fleet := new(Fleet)
 	fleet.Id = id
 	fleet.Name = name
 	fleet.Coordinates = core.Vector{0, 0, 0}
-	fleet.Ships = []Ship{}
+	fleet.Ships = []*Ship{}
 	fleet.Speed = 0.0
 	return fleet
 }
 
-func findShipIndex(s []Ship, id ShipId) int {
+func findShipIndex(s []*Ship, id ShipId) int {
 	for i, ship := range s {
 		if ship.Id == id {
 			return i
@@ -52,13 +52,13 @@ func (f *Fleet) updateSpeed() {
 	f.Speed = lowestSpeed
 }
 
-func (f Fleet) AttachShip(ship Ship) Fleet {
+func (f *Fleet) AttachShip(ship *Ship) {
 	f.Ships = append(f.Ships, ship)
 	f.updateSpeed()
-	return f
+	return
 }
 
-func (f Fleet) DetachShip(ship Ship) Fleet {
+func (f *Fleet) DetachShip(ship *Ship) {
 	i := findShipIndex(f.Ships, ship.Id)
 
 	if i != -1 {
@@ -66,10 +66,10 @@ func (f Fleet) DetachShip(ship Ship) Fleet {
 		f.updateSpeed()
 	}
 
-	return f
+	return
 }
 
-func (f Fleet) MoveTowards(target core.Vector, duration time.Duration) Fleet {
+func (f *Fleet) MoveTowards(target core.Vector, duration time.Duration) {
 	distanceMoved := f.Speed * duration.Seconds()
 	distanceVector := target.Subtract(f.Coordinates)
 	movementVector := distanceVector.Normalize().Multiply(distanceMoved)
@@ -80,5 +80,5 @@ func (f Fleet) MoveTowards(target core.Vector, duration time.Duration) Fleet {
 		f.Coordinates = f.Coordinates.Add(movementVector)
 	}
 
-	return f
+	return
 }
