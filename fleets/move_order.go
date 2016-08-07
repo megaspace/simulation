@@ -12,11 +12,10 @@ type MoveOrder struct {
 	status OrderStatus
 }
 
-func NewMoveOrder(fleet *Fleet, target core.Vector) Order {
+func NewMoveOrder(target core.Vector) Order {
 	order := new(MoveOrder)
-	order.fleet = fleet
 	order.target = target
-	order.status = PENDING
+	order.status = ORDER_NOT_ASSIGNED
 	return order
 }
 
@@ -24,14 +23,23 @@ func (o *MoveOrder) Status() OrderStatus {
 	return o.status
 }
 
-func (o *MoveOrder) Execute(duration time.Duration) {
-	if o.status == PENDING {
-		o.status = IN_PROGRESS
+func (o *MoveOrder) execute(duration time.Duration) {
+	if o.fleet == nil {
+		return
 	}
 
-	o.fleet.MoveTowards(o.target, duration)
+	if o.status == ORDER_PENDING {
+		o.status = ORDER_IN_PROGRESS
+	}
+
+	o.fleet.moveTowards(o.target, duration)
 
 	if o.fleet.Coordinates == o.target {
-		o.status = COMPLETE
+		o.status = ORDER_COMPLETE
 	}
+}
+
+func (o *MoveOrder) assignFleet(f *Fleet) {
+	o.fleet = f
+	o.status = ORDER_PENDING
 }

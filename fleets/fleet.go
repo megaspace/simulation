@@ -16,6 +16,7 @@ type Fleet struct {
 	Coordinates core.Vector
 	Ships       []*ships.Ship
 	Speed       float64
+	orders      []Order
 }
 
 func New(id FleetId, name string) *Fleet {
@@ -70,7 +71,20 @@ func (f *Fleet) DetachShip(ship *ships.Ship) {
 	return
 }
 
-func (f *Fleet) MoveTowards(target core.Vector, duration time.Duration) {
+func (f *Fleet) IssueOrder(order Order) {
+	f.orders = append(f.orders, order)
+	order.assignFleet(f)
+}
+
+func (f *Fleet) Update(duration time.Duration) {
+	if len(f.orders) == 0 {
+		return
+	}
+
+	f.orders[0].execute(duration)
+}
+
+func (f *Fleet) moveTowards(target core.Vector, duration time.Duration) {
 	distanceMoved := f.Speed * duration.Seconds()
 	distanceVector := target.Subtract(f.Coordinates)
 	movementVector := distanceVector.Normalize().Multiply(distanceMoved)

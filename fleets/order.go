@@ -4,5 +4,7 @@ import "time"
 
 type Order interface {
 	Status() OrderStatus
-	Execute(duration time.Duration)
+
+	execute(duration time.Duration)
+	assignFleet(f *Fleet)
 }

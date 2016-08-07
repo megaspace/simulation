@@ -3,7 +3,8 @@ package fleets
 type OrderStatus byte
 
 const (
-	PENDING OrderStatus = iota
-	IN_PROGRESS
-	COMPLETE
+	ORDER_NOT_ASSIGNED OrderStatus = iota
+	ORDER_PENDING
+	ORDER_IN_PROGRESS
+	ORDER_COMPLETE
 )
