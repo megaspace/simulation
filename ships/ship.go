@@ -1,4 +1,4 @@
-package entities
+package ships
 
 type ShipId int64
 
@@ -7,7 +7,7 @@ type Ship struct {
 	Speed float64
 }
 
-func NewShip(id ShipId, speed float64) *Ship {
+func New(id ShipId, speed float64) *Ship {
 	ship := new(Ship)
 	ship.Id = id
 	ship.Speed = speed

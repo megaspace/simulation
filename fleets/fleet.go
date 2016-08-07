@@ -1,10 +1,11 @@
-package entities
+package fleets
 
 import (
 	"math"
 	"time"
 
 	"github.com/megaspace/simulation/core"
+	"github.com/megaspace/simulation/ships"
 )
 
 type FleetId int64
@@ -13,21 +14,21 @@ type Fleet struct {
 	Id          FleetId
 	Name        string
 	Coordinates core.Vector
-	Ships       []*Ship
+	Ships       []*ships.Ship
 	Speed       float64
 }
 
-func NewFleet(id FleetId, name string) *Fleet {
+func New(id FleetId, name string) *Fleet {
 	fleet := new(Fleet)
 	fleet.Id = id
 	fleet.Name = name
 	fleet.Coordinates = core.Vector{0, 0, 0}
-	fleet.Ships = []*Ship{}
+	fleet.Ships = []*ships.Ship{}
 	fleet.Speed = 0.0
 	return fleet
 }
 
-func findShipIndex(s []*Ship, id ShipId) int {
+func findShipIndex(s []*ships.Ship, id ships.ShipId) int {
 	for i, ship := range s {
 		if ship.Id == id {
 			return i
@@ -52,13 +53,13 @@ func (f *Fleet) updateSpeed() {
 	f.Speed = lowestSpeed
 }
 
-func (f *Fleet) AttachShip(ship *Ship) {
+func (f *Fleet) AttachShip(ship *ships.Ship) {
 	f.Ships = append(f.Ships, ship)
 	f.updateSpeed()
 	return
 }
 
-func (f *Fleet) DetachShip(ship *Ship) {
+func (f *Fleet) DetachShip(ship *ships.Ship) {
 	i := findShipIndex(f.Ships, ship.Id)
 
 	if i != -1 {

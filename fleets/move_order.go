@@ -1,19 +1,18 @@
-package orders
+package fleets
 
 import (
 	"time"
 
 	"github.com/megaspace/simulation/core"
-	"github.com/megaspace/simulation/entities"
 )
 
 type MoveOrder struct {
-	fleet  *entities.Fleet
+	fleet  *Fleet
 	target core.Vector
 	status OrderStatus
 }
 
-func NewMoveOrder(fleet *entities.Fleet, target core.Vector) Order {
+func NewMoveOrder(fleet *Fleet, target core.Vector) Order {
 	order := new(MoveOrder)
 	order.fleet = fleet
 	order.target = target

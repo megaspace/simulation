@@ -1,4 +1,4 @@
-package entities_test
+package fleets_test
 
 import (
 	"testing"
@@ -7,12 +7,13 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/megaspace/simulation/core"
-	"github.com/megaspace/simulation/entities"
+	"github.com/megaspace/simulation/fleets"
+	"github.com/megaspace/simulation/ships"
 )
 
 func TestAttachShip(t *testing.T) {
-	ship := entities.NewShip(10, 46.1)
-	fleet := entities.NewFleet(1, "Test Fleet")
+	ship := ships.New(10, 46.1)
+	fleet := fleets.New(1, "Test Fleet")
 	assert.Equal(t, 0, len(fleet.Ships))
 	assert.Equal(t, 0, cap(fleet.Ships))
 	assert.Equal(t, 0.0, fleet.Speed)
@@ -24,12 +25,12 @@ func TestAttachShip(t *testing.T) {
 }
 
 func TestDetachShip(t *testing.T) {
-	ship := entities.NewShip(10, 46.1)
-	fleet := entities.Fleet{
+	ship := ships.New(10, 46.1)
+	fleet := fleets.Fleet{
 		1,
 		"Test Fleet",
 		core.Vector{0, 0, 0},
-		[]*entities.Ship{ship},
+		[]*ships.Ship{ship},
 		46.1,
 	}
 	assert.Equal(t, 1, len(fleet.Ships))
@@ -42,12 +43,12 @@ func TestDetachShip(t *testing.T) {
 }
 
 func TestMoveTowards(t *testing.T) {
-	ship := entities.NewShip(345, 10.0)
-	fleet := entities.Fleet{
+	ship := ships.New(345, 10.0)
+	fleet := fleets.Fleet{
 		5234,
 		"Test Fleet",
 		core.Vector{0, 0, 0},
-		[]*entities.Ship{ship},
+		[]*ships.Ship{ship},
 		10.0,
 	}
 

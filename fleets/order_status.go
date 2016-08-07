@@ -1,4 +1,4 @@
-package orders
+package fleets
 
 type OrderStatus byte
 
