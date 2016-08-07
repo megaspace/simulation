@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/megaspace/server/core"
-	"github.com/megaspace/server/entities"
+	"github.com/megaspace/simulation/core"
+	"github.com/megaspace/simulation/entities"
 )
 
 func TestAttachShip(t *testing.T) {

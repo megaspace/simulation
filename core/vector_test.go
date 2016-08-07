@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/megaspace/server/core"
+	"github.com/megaspace/simulation/core"
 )
 
 func TestAdd(t *testing.T) {

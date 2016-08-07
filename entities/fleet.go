@@ -4,7 +4,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/megaspace/server/core"
+	"github.com/megaspace/simulation/core"
 )
 
 type FleetId int64

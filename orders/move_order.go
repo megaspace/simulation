@@ -3,8 +3,8 @@ package orders
 import (
 	"time"
 
-	"github.com/megaspace/server/core"
-	"github.com/megaspace/server/entities"
+	"github.com/megaspace/simulation/core"
+	"github.com/megaspace/simulation/entities"
 )
 
 type MoveOrder struct {
