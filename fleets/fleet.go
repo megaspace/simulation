@@ -29,31 +29,6 @@ func New(id FleetId, name string) *Fleet {
 	return fleet
 }
 
-func findShipIndex(s []*ships.Ship, id ships.ShipId) int {
-	for i, ship := range s {
-		if ship.Id == id {
-			return i
-		}
-	}
-	return -1
-}
-
-func (f *Fleet) updateSpeed() {
-	if len(f.Ships) == 0 {
-		f.Speed = 0.0
-		return
-	}
-
-	lowestSpeed := math.MaxFloat64
-	for _, ship := range f.Ships {
-		if ship.Speed < lowestSpeed {
-			lowestSpeed = ship.Speed
-		}
-	}
-
-	f.Speed = lowestSpeed
-}
-
 func (f *Fleet) AttachShip(ship *ships.Ship) {
 	f.Ships = append(f.Ships, ship)
 	f.updateSpeed()
@@ -84,6 +59,15 @@ func (f *Fleet) Update(duration time.Duration) {
 	f.orders[0].execute(duration)
 }
 
+func findShipIndex(s []*ships.Ship, id ships.ShipId) int {
+	for i, ship := range s {
+		if ship.Id == id {
+			return i
+		}
+	}
+	return -1
+}
+
 func (f *Fleet) moveTowards(target core.Vector, duration time.Duration) {
 	distanceMoved := f.Speed * duration.Seconds()
 	distanceVector := target.Subtract(f.Coordinates)
@@ -96,4 +80,20 @@ func (f *Fleet) moveTowards(target core.Vector, duration time.Duration) {
 	}
 
 	return
+}
+
+func (f *Fleet) updateSpeed() {
+	if len(f.Ships) == 0 {
+		f.Speed = 0.0
+		return
+	}
+
+	lowestSpeed := math.MaxFloat64
+	for _, ship := range f.Ships {
+		if ship.Speed < lowestSpeed {
+			lowestSpeed = ship.Speed
+		}
+	}
+
+	f.Speed = lowestSpeed
 }

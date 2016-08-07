@@ -23,6 +23,11 @@ func (o *MoveOrder) Status() OrderStatus {
 	return o.status
 }
 
+func (o *MoveOrder) assignFleet(f *Fleet) {
+	o.fleet = f
+	o.status = ORDER_PENDING
+}
+
 func (o *MoveOrder) execute(duration time.Duration) {
 	if o.fleet == nil {
 		return
@@ -37,9 +42,4 @@ func (o *MoveOrder) execute(duration time.Duration) {
 	if o.fleet.Coordinates == o.target {
 		o.status = ORDER_COMPLETE
 	}
-}
-
-func (o *MoveOrder) assignFleet(f *Fleet) {
-	o.fleet = f
-	o.status = ORDER_PENDING
 }
