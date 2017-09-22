@@ -10,22 +10,22 @@ import (
 	"github.com/megaspace/simulation/ships"
 )
 
-func TestNewMoveOrderNotAssigned(t *testing.T) {
+func TestNewMoveOrderStatusNotAssigned(t *testing.T) {
 	target := core.NewVector(24, -23, 23.4)
 	var order Order
 	order = NewMoveOrder(target)
 
-	assert.Equal(t, OrderNotAssigned, order.Status())
+	assert.Equal(t, OrderStatusNotAssigned, order.Status())
 }
 
-func TestNewMoveOrderPending(t *testing.T) {
+func TestNewMoveOrderStatusPending(t *testing.T) {
 	fleet := New(1, "Test Fleet")
 	target := core.NewVector(24, -23, 23.4)
 	var order Order
 	order = NewMoveOrder(target)
 	fleet.IssueOrder(order)
 
-	assert.Equal(t, OrderPending, order.Status())
+	assert.Equal(t, OrderStatusPending, order.Status())
 }
 
 func TestExecute_IN_PROGRESS(t *testing.T) {
@@ -41,7 +41,7 @@ func TestExecute_IN_PROGRESS(t *testing.T) {
 	order.execute(time.Second)
 
 	assert.Equal(t, core.NewVector(10, 0, 0), fleet.Coordinates)
-	assert.Equal(t, OrderInProgress, order.Status())
+	assert.Equal(t, OrderStatusInProgress, order.Status())
 }
 
 func TestExecute_COMPLETE(t *testing.T) {
@@ -57,5 +57,5 @@ func TestExecute_COMPLETE(t *testing.T) {
 	order.execute(time.Second)
 
 	assert.Equal(t, target, fleet.Coordinates)
-	assert.Equal(t, OrderComplete, order.Status())
+	assert.Equal(t, OrderStatusComplete, order.Status())
 }

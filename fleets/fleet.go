@@ -8,10 +8,13 @@ import (
 	"github.com/megaspace/simulation/ships"
 )
 
-type FleetId int64
+// FleetID is a unique int64 identifying the Fleet
+type FleetID int64
 
+// Fleet is a collection of ships
+// The speed of the whole Fleet is as fast the slowest ship included
 type Fleet struct {
-	Id          FleetId
+	ID          FleetID
 	Name        string
 	Coordinates core.Vector
 	Ships       []*ships.Ship
@@ -20,9 +23,10 @@ type Fleet struct {
 	orders []Order
 }
 
-func New(id FleetId, name string) *Fleet {
+// New is a constructor for a Fleet that takes a FleetID (or int64) and a name
+func New(id FleetID, name string) *Fleet {
 	fleet := new(Fleet)
-	fleet.Id = id
+	fleet.ID = id
 	fleet.Name = name
 	fleet.Coordinates = core.VectorZero
 	fleet.Ships = []*ships.Ship{}
@@ -30,14 +34,16 @@ func New(id FleetId, name string) *Fleet {
 	return fleet
 }
 
+// AttachShip includes the ship in the fleet list
 func (f *Fleet) AttachShip(ship *ships.Ship) {
 	f.Ships = append(f.Ships, ship)
 	f.updateSpeed()
 	return
 }
 
+// DetachShip removes the ship from the fleet list
 func (f *Fleet) DetachShip(ship *ships.Ship) {
-	i := findShipIndex(f.Ships, ship.Id)
+	i := findShipIndex(f.Ships, ship.ID)
 
 	if i != -1 {
 		f.Ships = append(f.Ships[:i], f.Ships[i+1:]...)
@@ -47,18 +53,20 @@ func (f *Fleet) DetachShip(ship *ships.Ship) {
 	return
 }
 
+// IssueOrder is how to assign an order to a fleet
 func (f *Fleet) IssueOrder(order Order) {
 	f.orders = append(f.orders, order)
 	order.assignFleet(f)
 }
 
+// Update is called as part of the main game loop to activate the fleet
 func (f *Fleet) Update(duration time.Duration) {
 	if len(f.orders) == 0 {
 		return
 	}
 
 	for _, o := range f.orders {
-		if o.Status() == OrderComplete {
+		if o.Status() == OrderStatusComplete {
 			continue
 		}
 		o.execute(duration)
@@ -66,9 +74,9 @@ func (f *Fleet) Update(duration time.Duration) {
 	}
 }
 
-func findShipIndex(s []*ships.Ship, id ships.ShipId) int {
+func findShipIndex(s []*ships.Ship, id ships.ShipID) int {
 	for i, ship := range s {
-		if ship.Id == id {
+		if ship.ID == id {
 			return i
 		}
 	}

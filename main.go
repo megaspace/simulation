@@ -10,7 +10,10 @@ import (
 
 func main() {
 	fleet1 := fleets.New(1, "First Fleet")
-	fleet1.AttachShip(ships.New(1, 1))
+	ship1 := ships.New(1, 1)
+	fleet1.AttachShip(ship1)
+	ship2 := ships.New(2, 10)
+	fleet1.AttachShip(ship2)
 
 	fleet1Destination := core.Vector{X: 10, Y: 0, Z: 0}
 	fleet1MoveOrder := fleets.NewMoveOrder(fleet1Destination)
