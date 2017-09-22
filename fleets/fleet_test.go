@@ -12,12 +12,12 @@ import (
 
 func TestAttachShip(t *testing.T) {
 	ship := ships.New(10, 46.1)
-	fleet := New(1, "Test Fleet")
+	fleet := newFleet(1, "Test Fleet")
 	assert.Equal(t, 0, len(fleet.Ships))
 	assert.Equal(t, 0, cap(fleet.Ships))
 	assert.Equal(t, 0.0, fleet.Speed)
 
-	fleet.AttachShip(ship)
+	fleet.attachShip(ship)
 
 	assert.Equal(t, 1, len(fleet.Ships))
 	assert.Equal(t, 46.1, fleet.Speed)
@@ -69,32 +69,32 @@ func TestMoveTowards(t *testing.T) {
 }
 
 func TestIssueOrder(t *testing.T) {
-	fleet := New(1, "Test Fleet")
+	fleet := newFleet(1, "Test Fleet")
 	order1 := NewMoveOrder(core.NewVector(10, 10, 10))
 	order2 := NewMoveOrder(core.NewVector(20, 20, 20))
 
 	assert.Equal(t, 0, len(fleet.orders))
 
-	fleet.IssueOrder(order1)
+	fleet.issueOrder(order1)
 	assert.Equal(t, 1, len(fleet.orders))
 	assert.Equal(t, order1, fleet.orders[0])
 
-	fleet.IssueOrder(order2)
+	fleet.issueOrder(order2)
 	assert.Equal(t, order2, fleet.orders[1])
 	assert.Equal(t, 2, len(fleet.orders))
 }
 
 func TestUpdateMultipleOrders(t *testing.T) {
-	fleet := New(1, "Test Fleet")
+	fleet := newFleet(1, "Test Fleet")
 	ship := ships.New(1, 10)
 	destination1 := core.NewVector(10, 0, 0)
 	destination2 := core.NewVector(20, 0, 0)
 	order1 := NewMoveOrder(destination1)
 	order2 := NewMoveOrder(destination2)
 
-	fleet.AttachShip(ship)
-	fleet.IssueOrder(order1)
-	fleet.IssueOrder(order2)
+	fleet.attachShip(ship)
+	fleet.issueOrder(order1)
+	fleet.issueOrder(order2)
 
 	fleet.Update(time.Second * 10)
 	assert.Equal(t, destination1, fleet.Coordinates)

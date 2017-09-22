@@ -19,40 +19,40 @@ func TestNewMoveOrderStatusNotAssigned(t *testing.T) {
 }
 
 func TestNewMoveOrderStatusPending(t *testing.T) {
-	fleet := New(1, "Test Fleet")
+	fleet := newFleet(1, "Test Fleet")
 	target := core.NewVector(24, -23, 23.4)
 	var order Order
 	order = NewMoveOrder(target)
-	fleet.IssueOrder(order)
+	fleet.issueOrder(order)
 
 	assert.Equal(t, OrderStatusPending, order.Status())
 }
 
 func TestExecute_IN_PROGRESS(t *testing.T) {
-	ship := ships.New(1, 10)
-	fleet := New(1, "Test Fleet")
-	fleet.AttachShip(ship)
-	target := core.NewVector(20, 0, 0)
+	ship := ships.New(1, 5)
+	fleet := newFleet(1, "Test Fleet")
+	fleet.attachShip(ship)
+	target := core.NewVector(100, 0, 0)
 
 	var order Order
 	order = NewMoveOrder(target)
-	fleet.IssueOrder(order)
+	fleet.issueOrder(order)
 
 	order.execute(time.Second)
 
-	assert.Equal(t, core.NewVector(10, 0, 0), fleet.Coordinates)
+	assert.Equal(t, core.NewVector(5, 0, 0), fleet.Coordinates)
 	assert.Equal(t, OrderStatusInProgress, order.Status())
 }
 
 func TestExecute_COMPLETE(t *testing.T) {
 	ship := ships.New(1, 10)
-	fleet := New(1, "Test Fleet")
-	fleet.AttachShip(ship)
+	fleet := newFleet(1, "Test Fleet")
+	fleet.attachShip(ship)
 	target := core.NewVector(10, 0, 0)
 
 	var order Order
 	order = NewMoveOrder(target)
-	fleet.IssueOrder(order)
+	fleet.issueOrder(order)
 
 	order.execute(time.Second)
 

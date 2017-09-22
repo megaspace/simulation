@@ -24,7 +24,7 @@ type Fleet struct {
 }
 
 // New is a constructor for a Fleet that takes a FleetID (or int64) and a name
-func New(id FleetID, name string) *Fleet {
+func newFleet(id FleetID, name string) *Fleet {
 	fleet := new(Fleet)
 	fleet.ID = id
 	fleet.Name = name
@@ -34,8 +34,7 @@ func New(id FleetID, name string) *Fleet {
 	return fleet
 }
 
-// AttachShip includes the ship in the fleet list
-func (f *Fleet) AttachShip(ship *ships.Ship) {
+func (f *Fleet) attachShip(ship *ships.Ship) {
 	f.Ships = append(f.Ships, ship)
 	f.updateSpeed()
 	return
@@ -53,8 +52,7 @@ func (f *Fleet) DetachShip(ship *ships.Ship) {
 	return
 }
 
-// IssueOrder is how to assign an order to a fleet
-func (f *Fleet) IssueOrder(order Order) {
+func (f *Fleet) issueOrder(order Order) {
 	f.orders = append(f.orders, order)
 	order.assignFleet(f)
 }

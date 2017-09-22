@@ -1,34 +1,35 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/megaspace/simulation/core"
 	"github.com/megaspace/simulation/fleets"
 	"github.com/megaspace/simulation/ships"
 )
 
 func main() {
-	fleet1 := fleets.New(1, "First Fleet")
-	ship1 := ships.New(1, 1)
-	fleet1.AttachShip(ship1)
-	ship2 := ships.New(2, 10)
-	fleet1.AttachShip(ship2)
+	fleetService := fleets.NewFleetService()
 
-	fleet1Destination := core.Vector{X: 10, Y: 0, Z: 0}
-	fleet1MoveOrder := fleets.NewMoveOrder(fleet1Destination)
-	fleet1.IssueOrder(fleet1MoveOrder)
+	ship1 := ships.New(1, 0.00000165343)
+	ship2 := ships.New(2, 0.004352)
 
-	fleet1Destination2 := core.Vector{X: -5, Y: 10, Z: 1}
-	fleet1MoveOrder2 := fleets.NewMoveOrder(fleet1Destination2)
-	fleet1.IssueOrder(fleet1MoveOrder2)
+	fleet1ID := fleetService.CreateFleet("Slow Fleet", ship1)
+	fleet2ID := fleetService.CreateFleet("Fast Fleet", ship2)
+
+	fleet1MoveOrder := fleets.NewMoveOrder(core.NewVector(1, 0, 0))
+	if err := fleetService.IssueOrder(fleet1ID, fleet1MoveOrder); err != nil {
+		panic(err)
+	}
+
+	fleet2MoveOrder := fleets.NewMoveOrder(core.NewVector(-5, 10, 1))
+	if err := fleetService.IssueOrder(fleet2ID, fleet2MoveOrder); err != nil {
+		panic(err)
+	}
 
 	clock := core.Clock{}
 	clock.Start()
 
 	for {
 		delta := clock.Delta()
-		fleet1.Update(delta)
-		fmt.Println(fleet1.Coordinates)
+		fleetService.Update(delta)
 	}
 }
