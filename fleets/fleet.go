@@ -16,14 +16,15 @@ type Fleet struct {
 	Coordinates core.Vector
 	Ships       []*ships.Ship
 	Speed       float64
-	orders      []Order
+
+	orders []Order
 }
 
 func New(id FleetId, name string) *Fleet {
 	fleet := new(Fleet)
 	fleet.Id = id
 	fleet.Name = name
-	fleet.Coordinates = core.Vector{0, 0, 0}
+	fleet.Coordinates = core.VectorZero
 	fleet.Ships = []*ships.Ship{}
 	fleet.Speed = 0.0
 	return fleet
@@ -56,7 +57,13 @@ func (f *Fleet) Update(duration time.Duration) {
 		return
 	}
 
-	f.orders[0].execute(duration)
+	for _, o := range f.orders {
+		if o.Status() == OrderComplete {
+			continue
+		}
+		o.execute(duration)
+		return
+	}
 }
 
 func findShipIndex(s []*ships.Ship, id ships.ShipId) int {

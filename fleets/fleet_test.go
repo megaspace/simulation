@@ -28,7 +28,7 @@ func TestDetachShip(t *testing.T) {
 	fleet := Fleet{
 		1,
 		"Test Fleet",
-		core.Vector{0, 0, 0},
+		core.VectorZero,
 		[]*ships.Ship{ship},
 		46.1,
 		[]Order{},
@@ -47,31 +47,31 @@ func TestMoveTowards(t *testing.T) {
 	fleet := Fleet{
 		5234,
 		"Test Fleet",
-		core.Vector{0, 0, 0},
+		core.VectorZero,
 		[]*ships.Ship{ship},
 		10.0,
 		[]Order{},
 	}
 
 	// Move a distance we can reach
-	fleet.moveTowards(core.Vector{1, 0, 0}, time.Second)
-	assert.Equal(t, core.Vector{1, 0, 0}, fleet.Coordinates)
+	fleet.moveTowards(core.NewVector(1, 0, 0), time.Second)
+	assert.Equal(t, core.NewVector(1, 0, 0), fleet.Coordinates)
 
-	fleet.Coordinates = core.Vector{0, 0, 0}
+	fleet.Coordinates = core.VectorZero
 	// Move to exactly the distance we can reach
-	fleet.moveTowards(core.Vector{10, 0, 0}, time.Second)
-	assert.Equal(t, core.Vector{10, 0, 0}, fleet.Coordinates)
+	fleet.moveTowards(core.NewVector(10, 0, 0), time.Second)
+	assert.Equal(t, core.NewVector(10, 0, 0), fleet.Coordinates)
 
-	fleet.Coordinates = core.Vector{0, 0, 0}
+	fleet.Coordinates = core.VectorZero
 	// Move a distance we can't reach
-	fleet.moveTowards(core.Vector{20, 0, 0}, time.Second)
-	assert.Equal(t, core.Vector{10, 0, 0}, fleet.Coordinates)
+	fleet.moveTowards(core.NewVector(20, 0, 0), time.Second)
+	assert.Equal(t, core.NewVector(10, 0, 0), fleet.Coordinates)
 }
 
 func TestIssueOrder(t *testing.T) {
 	fleet := New(1, "Test Fleet")
-	order1 := NewMoveOrder(core.Vector{10, 10, 10})
-	order2 := NewMoveOrder(core.Vector{20, 20, 20})
+	order1 := NewMoveOrder(core.NewVector(10, 10, 10))
+	order2 := NewMoveOrder(core.NewVector(20, 20, 20))
 
 	assert.Equal(t, 0, len(fleet.orders))
 
@@ -82,4 +82,23 @@ func TestIssueOrder(t *testing.T) {
 	fleet.IssueOrder(order2)
 	assert.Equal(t, order2, fleet.orders[1])
 	assert.Equal(t, 2, len(fleet.orders))
+}
+
+func TestUpdateMultipleOrders(t *testing.T) {
+	fleet := New(1, "Test Fleet")
+	ship := ships.New(1, 10)
+	destination1 := core.NewVector(10, 0, 0)
+	destination2 := core.NewVector(20, 0, 0)
+	order1 := NewMoveOrder(destination1)
+	order2 := NewMoveOrder(destination2)
+
+	fleet.AttachShip(ship)
+	fleet.IssueOrder(order1)
+	fleet.IssueOrder(order2)
+
+	fleet.Update(time.Second * 10)
+	assert.Equal(t, destination1, fleet.Coordinates)
+
+	fleet.Update(time.Second * 10)
+	assert.Equal(t, destination2, fleet.Coordinates)
 }

@@ -15,7 +15,7 @@ type MoveOrder struct {
 func NewMoveOrder(target core.Vector) Order {
 	order := new(MoveOrder)
 	order.target = target
-	order.status = ORDER_NOT_ASSIGNED
+	order.status = OrderNotAssigned
 	return order
 }
 
@@ -25,7 +25,7 @@ func (o *MoveOrder) Status() OrderStatus {
 
 func (o *MoveOrder) assignFleet(f *Fleet) {
 	o.fleet = f
-	o.status = ORDER_PENDING
+	o.status = OrderPending
 }
 
 func (o *MoveOrder) execute(duration time.Duration) {
@@ -33,13 +33,13 @@ func (o *MoveOrder) execute(duration time.Duration) {
 		return
 	}
 
-	if o.status == ORDER_PENDING {
-		o.status = ORDER_IN_PROGRESS
+	if o.status == OrderPending {
+		o.status = OrderInProgress
 	}
 
 	o.fleet.moveTowards(o.target, duration)
 
 	if o.fleet.Coordinates == o.target {
-		o.status = ORDER_COMPLETE
+		o.status = OrderComplete
 	}
 }
