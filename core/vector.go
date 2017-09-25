@@ -2,6 +2,7 @@ package core
 
 import (
 	"math"
+	"math/rand"
 )
 
 var (
@@ -67,4 +68,16 @@ func (v Vector) Normalize() Vector {
 	}
 
 	return v.Divide(magnitude)
+}
+
+func CreateVectorWithinRadius(radius float64) Vector {
+	randomValueX := rand.Float64() - 0.5
+	randomValueY := rand.Float64() - 0.5
+	randomValueZ := rand.Float64() - 0.5
+
+	randomValueRadial := rand.Float64()
+
+	directionVector := NewVector(randomValueX, randomValueY, randomValueZ).Normalize()
+
+	return directionVector.Multiply(randomValueRadial * radius)
 }

@@ -7,21 +7,21 @@ import (
 	"github.com/megaspace/simulation/ships"
 )
 
-// FleetService is the service layer for all things fleet related
-type FleetService struct {
+// Service is the service layer for all things fleet related
+type Service struct {
 	nextFleetID FleetID
 	fleets      map[FleetID]*Fleet
 }
 
-// NewFleetService returns a new service to manage all the fleets.
+// NewService returns a new service to manage all the fleets.
 // Only one of these is needed per game.
-func NewFleetService() *FleetService {
-	fleetService := new(FleetService)
+func NewService() *Service {
+	fleetService := new(Service)
 	fleetService.fleets = make(map[FleetID]*Fleet)
 	return fleetService
 }
 
-func (fs *FleetService) CreateFleet(name string, initialShip *ships.Ship) FleetID {
+func (fs *Service) CreateFleet(name string, initialShip *ships.Ship) FleetID {
 	fleetID := fs.nextFleetID
 	fs.nextFleetID = fs.nextFleetID + 1
 
@@ -32,7 +32,7 @@ func (fs *FleetService) CreateFleet(name string, initialShip *ships.Ship) FleetI
 	return fleetID
 }
 
-func (fs *FleetService) IssueOrder(fleetID FleetID, order Order) error {
+func (fs *Service) IssueOrder(fleetID FleetID, order Order) error {
 	var ok bool
 	var fleet *Fleet
 	if fleet, ok = fs.fleets[fleetID]; !ok {
@@ -42,7 +42,7 @@ func (fs *FleetService) IssueOrder(fleetID FleetID, order Order) error {
 	return nil
 }
 
-func (fs *FleetService) Update(delta time.Duration) {
+func (fs *Service) Update(delta time.Duration) {
 	for _, fleet := range fs.fleets {
 		fleet.Update(delta)
 	}
