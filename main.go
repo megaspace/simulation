@@ -14,5 +14,5 @@ func main() {
 	go api.StartServer(":50052")
 
 	game := game.New()
-	go game.Start()
+	game.Start()
 }
