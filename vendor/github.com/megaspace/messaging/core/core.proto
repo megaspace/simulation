@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package core;
+
+message Coordinates {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+}
+
+message Color {
+  float r = 1;
+  float g = 2;
+  float b = 3;
+}

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+import "core/core.proto";
+
+package stars;
+
+service StarService {
+  rpc GetStars (GetStarsRequest) returns (GetStarsResponse);
+}
+
+message GetStarsRequest {}
+
+message GetStarsResponse {
+  int64 unixTime = 1;
+  repeated Star stars = 2;
+}
+
+message Star {
+  int32 id = 1;
+  string name = 2;
+  core.Coordinates coordinates = 3;
+  string classification = 4;
+  double temperature = 5;
+  double mass = 6;
+  double radius = 7;
+  core.Color color = 8;
+}

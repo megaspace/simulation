@@ -4,7 +4,7 @@ import (
 	"math/rand"
 
 	"github.com/megaspace/simulation/api"
-	"github.com/megaspace/simulation/game"
+	"github.com/megaspace/simulation/engine"
 )
 
 func main() {
@@ -13,6 +13,6 @@ func main() {
 
 	go api.StartServer(":50052")
 
-	game := game.New()
+	game := engine.NewGame()
 	game.Start()
 }
